@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Self-Service Search Guide :: Frontend Operator Documentation</title>
+    <link rel="canonical" href="https://redhatinsights.github.io/frontend-operator/frontend-operator/dev/self-service-search.html">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../ui/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://redhatinsights.github.io/frontend-operator">Frontend Operator Documentation</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="frontend-operator" data-version="dev">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Frontend Operator</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="frontendenvironment-guide.html">FrontendEnvironment Configuration Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="widget-registry-guide.html">Widget Registry Configuration Guide</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="self-service-search.html">Self-Service Search Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="api_reference.html">API Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Frontend Operator</span>
+    <span class="version">dev</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Frontend Operator</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Frontend Operator</a></li>
+    <li><a href="self-service-search.html">Self-Service Search Guide</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/RedHatInsights/frontend-operator/edit/main/docs/antora/modules/ROOT/pages/self-service-search.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Self-Service Search Guide</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_overview">Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_how_it_works">How It Works</a></li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+<li><a href="#_searchentry_fields">SearchEntry Fields</a>
+<ul class="sectlevel2">
+<li><a href="#_permissions">Permissions</a></li>
+</ul>
+</li>
+<li><a href="#_example_frontend_cr">Example Frontend CR</a>
+<ul class="sectlevel2">
+<li><a href="#_search_entry_with_permissions">Search Entry with Permissions</a></li>
+<li><a href="#_search_entry_with_external_link">Search Entry with External Link</a></li>
+</ul>
+</li>
+<li><a href="#_how_the_operator_processes_search_entries">How the Operator Processes Search Entries</a></li>
+<li><a href="#_testing_your_search_entries">Testing Your Search Entries</a></li>
+<li><a href="#_common_pitfalls">Common Pitfalls</a>
+<ul class="sectlevel2">
+<li><a href="#_missing_feoconfigenabled">Missing <code>feoConfigEnabled</code></a></li>
+<li><a href="#_duplicate_ids">Duplicate IDs</a></li>
+<li><a href="#_missing_required_fields">Missing Required Fields</a></li>
+<li><a href="#_permissions_misconfiguration">Permissions Misconfiguration</a></li>
+</ul>
+</li>
+<li><a href="#_next_steps">Next Steps</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_overview"><a class="anchor" href="#_overview"></a>Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Hybrid Cloud Console features a global search bar powered by <a href="https://github.com/RedHatInsights/insights-chrome">insights-chrome</a>. Teams can make their frontend pages discoverable in this search by adding <code>searchEntries</code> to their Frontend custom resource (CR). The frontend-operator aggregates all search entries from all Frontends in the environment into a single <code>search-index.json</code> ConfigMap, which Chrome reads at runtime to populate search results.</p>
+</div>
+<div class="sect2">
+<h3 id="_how_it_works"><a class="anchor" href="#_how_it_works"></a>How It Works</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You define <code>searchEntries</code> in your Frontend CR spec.</p>
+</li>
+<li>
+<p>The operator collects entries from every Frontend that has <code>feoConfigEnabled: true</code>.</p>
+</li>
+<li>
+<p>Each entry&#8217;s <code>id</code> is prefixed with <code>&lt;frontend-name&gt;-&lt;environment-name&gt;-</code> to ensure uniqueness across the environment.</p>
+</li>
+<li>
+<p>The operator sets <code>frontendRef</code> on each entry automatically&#8201;&#8212;&#8201;you do not need to set it.</p>
+</li>
+<li>
+<p>All entries are serialized into a <code>search-index.json</code> key inside the environment&#8217;s ConfigMap.</p>
+</li>
+<li>
+<p>Chrome loads the ConfigMap and uses it to serve search results.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>A Frontend resource deployed in a FrontendEnvironment</p>
+</li>
+<li>
+<p><code>feoConfigEnabled: true</code> set on your Frontend resource&#8201;&#8212;&#8201;without this, the operator ignores <code>searchEntries</code> entirely</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_searchentry_fields"><a class="anchor" href="#_searchentry_fields"></a>SearchEntry Fields</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each search entry supports the following fields:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for the search entry within your Frontend. The operator prefixes it with <code>&lt;frontend-name&gt;-&lt;environment-name&gt;-</code> in the generated index.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL path the search result links to (e.g., <code>/insights/inventory</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Display title shown in search results.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description shown below the title in search results.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alt_title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alternative titles for improved discoverability. Users searching for any of these terms will find the entry.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isExternal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to <code>true</code> if the link points to an external site outside the Hybrid Cloud Console.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>permissions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RBAC permissions that control visibility of the entry. Only users matching these permissions will see the search result. See <a href="#_permissions">Permissions</a>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_permissions"><a class="anchor" href="#_permissions"></a>Permissions</h3>
+<div class="paragraph">
+<p>The <code>permissions</code> array restricts which users can see a search entry. Each element has:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The permission-checking method to call (e.g., <code>isOrgAdmin</code>, <code>hasPermissions</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apps</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application identifiers to check permissions against.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>args</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JSON array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arguments passed to the permission method. Format depends on the method.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_frontend_cr"><a class="anchor" href="#_example_frontend_cr"></a>Example Frontend CR</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A minimal Frontend CR with search entries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: cloud.redhat.com/v1alpha1
+kind: Frontend
+metadata:
+  name: my-app
+  namespace: my-namespace
+spec:
+  envName: my-environment
+  title: My Application
+  deploymentRepo: https://github.com/RedHatInsights/my-app-frontend
+  frontend:
+    paths:
+      - /apps/my-app
+  image: quay.io/cloudservices/my-app-frontend:latest
+  feoConfigEnabled: true  # Required -- without this, searchEntries are ignored
+  module:
+    manifestLocation: /apps/my-app/fed-mods.json
+    modules:
+      - id: my-app
+        module: ./RootApp
+        routes:
+          - pathname: /my-app
+  searchEntries:
+    - id: "overview"
+      title: "My App Overview"
+      href: /my-app
+      description: "View the main dashboard for My App"
+      alt_title:
+        - My App Home
+        - My App Dashboard
+    - id: "settings"
+      title: "My App Settings"
+      href: /my-app/settings
+      description: "Configure My App preferences"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This produces two entries in <code>search-index.json</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
+  {
+    "id": "my-app-my-environment-overview",
+    "href": "/my-app",
+    "title": "My App Overview",
+    "description": "View the main dashboard for My App",
+    "alt_title": ["My App Home", "My App Dashboard"],
+    "frontendRef": "my-app"
+  },
+  {
+    "id": "my-app-my-environment-settings",
+    "href": "/my-app/settings",
+    "title": "My App Settings",
+    "description": "Configure My App preferences",
+    "frontendRef": "my-app"
+  }
+]</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_search_entry_with_permissions"><a class="anchor" href="#_search_entry_with_permissions"></a>Search Entry with Permissions</h3>
+<div class="paragraph">
+<p>Restrict a search result to organization administrators:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  searchEntries:
+    - id: "admin-panel"
+      title: "Admin Panel"
+      href: /my-app/admin
+      description: "Organization administration settings"
+      permissions:
+        - method: "isOrgAdmin"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_search_entry_with_external_link"><a class="anchor" href="#_search_entry_with_external_link"></a>Search Entry with External Link</h3>
+<div class="paragraph">
+<p>Link to documentation hosted outside the console:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">  searchEntries:
+    - id: "docs"
+      title: "My App Documentation"
+      href: https://docs.example.com/my-app
+      description: "Official documentation for My App"
+      isExternal: true</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_the_operator_processes_search_entries"><a class="anchor" href="#_how_the_operator_processes_search_entries"></a>How the Operator Processes Search Entries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Understanding the processing pipeline helps when troubleshooting:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The operator lists all Frontend resources in the FrontendEnvironment.</p>
+</li>
+<li>
+<p>For each Frontend with <code>feoConfigEnabled: true</code> and a non-empty <code>searchEntries</code> field, it reads the entries.</p>
+</li>
+<li>
+<p>For each entry, the operator:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prefixes <code>id</code> with <code>&lt;frontend-name&gt;-&lt;environment-name&gt;-</code> to guarantee uniqueness.</p>
+</li>
+<li>
+<p>Sets <code>frontendRef</code> to the Frontend resource name.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>All entries are collected into a single array.</p>
+</li>
+<li>
+<p>The array is serialized to JSON and stored in the environment&#8217;s ConfigMap under the key <code>search-index.json</code>.</p>
+</li>
+<li>
+<p>If <code>targetNamespaces</code> is configured on the FrontendEnvironment, the ConfigMap is propagated to those namespaces.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_testing_your_search_entries"><a class="anchor" href="#_testing_your_search_entries"></a>Testing Your Search Entries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After applying your Frontend CR, verify the entries appear in the ConfigMap:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># 1. Apply your Frontend CR
+oc apply -f my-frontend.yaml -n &lt;namespace&gt;
+
+# 2. Wait for reconciliation (typically a few seconds)
+
+# 3. Check the ConfigMap for your search entries
+oc get configmap &lt;environment-name&gt; -n &lt;namespace&gt; \
+  -o jsonpath='{.data.search-index\.json}' | python3 -m json.tool</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see your entries in the JSON output with the prefixed <code>id</code> and the <code>frontendRef</code> set to your Frontend name.</p>
+</div>
+<div class="paragraph">
+<p>To verify from the Chrome UI, open the Hybrid Cloud Console, click on the search bar, and type one of your entry titles or alternative titles.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_pitfalls"><a class="anchor" href="#_common_pitfalls"></a>Common Pitfalls</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_missing_feoconfigenabled"><a class="anchor" href="#_missing_feoconfigenabled"></a>Missing <code>feoConfigEnabled</code></h3>
+<div class="paragraph">
+<p><strong>Problem</strong>: Search entries are defined in the Frontend CR but do not appear in <code>search-index.json</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Cause</strong>: <code>feoConfigEnabled: true</code> is not set on the Frontend resource. The operator skips <code>searchEntries</code> entirely when this flag is <code>false</code> or missing.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fix</strong>: Add <code>feoConfigEnabled: true</code> to your Frontend spec.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_duplicate_ids"><a class="anchor" href="#_duplicate_ids"></a>Duplicate IDs</h3>
+<div class="paragraph">
+<p><strong>Problem</strong>: A search entry silently overwrites another entry.</p>
+</div>
+<div class="paragraph">
+<p><strong>Cause</strong>: Two entries in the same Frontend share the same <code>id</code> value. The operator prefixes IDs with <code>&lt;frontend-name&gt;-&lt;environment-name&gt;-</code>, so IDs only need to be unique within a single Frontend resource.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fix</strong>: Ensure each entry&#8217;s <code>id</code> is unique within your Frontend&#8217;s <code>searchEntries</code> array.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_missing_required_fields"><a class="anchor" href="#_missing_required_fields"></a>Missing Required Fields</h3>
+<div class="paragraph">
+<p><strong>Problem</strong>: Search entries appear in the ConfigMap but do not show up in Chrome&#8217;s search results.</p>
+</div>
+<div class="paragraph">
+<p><strong>Cause</strong>: One or more required fields (<code>id</code>, <code>href</code>, <code>title</code>, <code>description</code>) are empty or missing. Chrome may silently skip malformed entries.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fix</strong>: Ensure all required fields are populated. Check the ConfigMap JSON output to verify the entry data looks correct.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_permissions_misconfiguration"><a class="anchor" href="#_permissions_misconfiguration"></a>Permissions Misconfiguration</h3>
+<div class="paragraph">
+<p><strong>Problem</strong>: A search entry is not visible to any users, or visible to the wrong users.</p>
+</div>
+<div class="paragraph">
+<p><strong>Cause</strong>: The <code>permissions</code> array uses an incorrect <code>method</code> name or <code>args</code> format.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fix</strong>: Check the permission method name matches one supported by Chrome (e.g., <code>isOrgAdmin</code>, <code>hasPermissions</code>). Verify <code>args</code> format matches the method&#8217;s expected input&#8201;&#8212;&#8201;for example, <code>hasPermissions</code> expects args like <code>["inventory:hosts:read"]</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_next_steps"><a class="anchor" href="#_next_steps"></a>Next Steps</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Review the <a href="api_reference.html#k8s-api-github-com-redhatinsights-frontend-operator-api-v1alpha1-searchentry" class="xref page">SearchEntry API reference</a> for the complete field specification</p>
+</li>
+<li>
+<p>Learn about <a href="frontendenvironment-guide.html" class="xref page">FrontendEnvironment configuration</a></p>
+</li>
+<li>
+<p>See the <a href="https://github.com/RedHatInsights/landing-page-frontend/blob/master/frontend.yml">landing-page-frontend</a> for a production example of search entries in use</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../ui/js/site.js" data-ui-root-path="../../ui"></script>
+<script async src="../../ui/js/vendor/highlight.js"></script>
+  </body>
+</html>
